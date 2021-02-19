@@ -4,7 +4,7 @@ from enum import Enum
 BOARD_WIDTH = 8
 BOARD_HEIGHT = 8
 
-# Colours
+# Team colours
 class Colours(Enum):
     WHITE = 0
     BLACK = 1
