@@ -1,3 +1,7 @@
+# Modules
+import operator
+
+# Files
 from constants import *
 from board import Board
 
@@ -30,6 +34,24 @@ class Piece(object):
         """
         return (self.x, self.y)
 
+    def get_colour(self):
+        """
+        Get the piece's colour.
+
+        Returns:
+            (int): Enum value of the piece's colour
+        """
+        return self.colour
+
+    def has_moved(self):
+        """
+        Checks whether the piece has moved.
+        
+        Returns:
+            bool: True if piece has moved, else false
+        """
+        return self.moved
+
     def move(self, x:int, y:int):
         """ 
         Move the piece.
@@ -61,7 +83,7 @@ class Piece(object):
         Checks that the move is valid.
 
         Returns:
-            bool: Whether the move is valid
+            bool: True if the move is valid, else false
         """
 
         # Check bounds
@@ -70,3 +92,18 @@ class Piece(object):
             return False
         # Check space is not occupied
         return self.board.is_empty_slot(coord)
+
+    def validate_attack(self, coord:(int, int)):
+        """ 
+        Checks that the attack is valid.
+
+        Returns:
+            bool: True if the attack is valid, else false
+        """
+
+        # Check bounds
+        x, y = coord
+        if x < 0 or y < 0 or x >= BOARD_WIDTH or y >= BOARD_HEIGHT:
+            return False
+        # Check space is occupied by an opposing piece
+        return not self.board.is_empty_slot(coord) and self.board.get_slot(coord).get_colour() != self.colour
