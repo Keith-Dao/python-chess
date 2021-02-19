@@ -13,3 +13,19 @@ class Piece(object):
         self.x = x
         self.y = y
         self.colour = colour
+        self.captured = False
+
+    def move(self, x:int, y:int):
+        """ 
+        Move the piece.
+
+        Parameters:
+            x (int): x-coordinate (column) of the piece
+            y (int): y-coordinate (row) of the piece
+        """
+        self.x = x
+        self.y = y
+    
+    def set_captured(self):
+        """ Set the piece to be captured. """
+        self.captured = True
