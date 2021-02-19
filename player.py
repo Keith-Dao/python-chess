@@ -1,13 +1,16 @@
 class Player(object):
     """ One of the players in the game. """
-    _pieces = []
-    _first = None
 
-    def __init__(self, first:bool):
+    def __init__(self, colour:int):
         """
         Initialise the player.
 
         Parameters
-            first (bool): Determines whether the player goes first or not
+            colour (int): The enum value of the player's colour
         """
-        self._first = first
+        self.colour = colour
+        self.setup_pieces()
+
+    def setup_pieces(self):
+        """ Gives the player all the starting pieces. """
+        pass
