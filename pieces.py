@@ -107,3 +107,54 @@ class Piece(object):
             return False
         # Check space is occupied by an opposing piece
         return not self.board.is_empty_slot(coord) and self.board.get_slot(coord).get_colour() != self.colour
+
+
+class Pawn(Piece):
+    """ The pawn piece. """
+
+    def __init__(self, x:int, y:int, colour:int, board: Board):
+        """
+        Initialise the pawn piece.
+
+        Parameters:
+            x (int): x-coordinate (column) of the piece
+            y (int): y-coordinate (row) of the piece
+            colour (int): Enum value of the piece's colour
+            board (Board): Board the piece is on
+        """
+        super().__init__(x, y, colour, board)
+        self.moves = [(0, 1)]
+        self.startingMoves = [(0, 2)]
+        self.attack = [(1, 0)]
+
+    def get_possible_moves(self):
+        """ 
+        Gets all the possible moves.
+
+        Returns:
+            [(x, y)]: Array of x- y-coordinates that the piece can move to
+        """
+        
+        moves = []
+
+        # Regular move
+        MOVE = (0, 1)
+        coord = tuple(map(operator.add, self.get_coord(), MOVE))
+        if self.validate_move(coord):
+            moves += coord
+
+        # Starting move
+        STARTING_MOVE = (0, 2)
+        coord = tuple(map(operator.add, self.get_coord(), STARTING_MOVE))
+        if not self.has_moved() and self.validate_move(coord):
+            moves += coord
+
+        # Attacks
+        ATTACKS = [(-1, 1), (1, 1)]
+        for attack in ATTACKS:
+            coord = tuple(map(operator.add, self.get_coord(), attack))
+            if self.validate_attack(coord):
+                moves += coord
+
+        return moves
+
