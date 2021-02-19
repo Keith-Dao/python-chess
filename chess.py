@@ -1,8 +1,8 @@
+# Import modules
 import pygame
 
-# Contants
-BOARD_WIDTH = 8
-BOARD_HEIGHT = 8
+# Import constants
+from constants import * 
 
 # Functions
 def setup():
