@@ -21,6 +21,15 @@ class Piece(object):
         self.moved = False
         self.board = board
 
+    def get_coord(self):
+        """ 
+        Get the piece's coordinates.
+
+        Returns:
+            ((int, int)): x- y-coordinate of the piece
+        """
+        return (self.x, self.y)
+
     def move(self, x:int, y:int):
         """ 
         Move the piece.
