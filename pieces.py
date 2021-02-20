@@ -91,7 +91,7 @@ class Piece(object):
         """
 
         moves = []
-        for move in MOVES:
+        for move in self.MOVES:
             moves += self.get_indefinite_moves(self.get_new_coord(self.get_coord(), move), move)
         return moves
 
