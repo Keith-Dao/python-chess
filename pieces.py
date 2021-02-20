@@ -264,7 +264,7 @@ class King(Piece):
             bool: True if the move is valid, else false
         """
        
-        return super().validate_move(coord) and not self.is_coord_checked(coord):
+        return super().validate_move(coord) and not self.is_coord_checked(coord)
 
     def validate_attack(self, coord:(int, int)):
         """
@@ -277,7 +277,7 @@ class King(Piece):
             bool: True if the attack is valid, else false
         """
        
-        return super().validate_attack(coord) and not self.is_coord_checked(coord):
+        return super().validate_attack(coord) and not self.is_coord_checked(coord)
 
     def get_possible_moves(self):
         """
