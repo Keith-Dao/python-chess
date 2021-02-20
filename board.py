@@ -63,3 +63,25 @@ class Board(object):
             (int , int): new x- y-coordinate
         """
         return tuple(map(operator.add, coord, direction))
+
+    def get_piece_in_direction(self, coord:(int, int), direction:(int, int)):
+        """ 
+        Recursively checks for a piece in a given direction.
+
+        Parameters:
+            coord ((int, int)): x- y-coordinate to check for a piece
+            direction ((int, int)): x- y-direction to check for if there is not piece
+
+        Returns:
+            Piece / None: First piece to be found or None if coordinate is invalid
+        """
+        
+        # Check bounds
+        if not self.is_in_bounds(coord):
+            return None
+
+        # Check if coordinate is empty
+        if self.is_empty_coord(coord) is None:
+            return self.get_piece_in_direction(self.get_new_coord(coord, direction), direction)
+        # There is a piece at the slot
+        return self.get_piece(coord)
