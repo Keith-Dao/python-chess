@@ -34,6 +34,19 @@ class Piece(object):
         """
         return (self.x, self.y)
 
+    def get_new_coord(self, coord:(int, int), direction:(int, int)):
+        """
+        Get the coordinate of the next position.
+
+        Parameters:
+            coord ((int, int)): current x- y-coordinate
+            direction ((int, int)): x- y-direction of the the next move
+
+        Returns:
+            (int , int): new x- y-coordinate
+        """
+        return tuple(map(operator.add, coord, direction))
+
     def get_colour(self):
         """
         Get the piece's colour.
@@ -108,7 +121,6 @@ class Piece(object):
         # Check space is occupied by an opposing piece
         return not self.board.is_empty_slot(coord) and self.board.get_slot(coord).get_colour() != self.colour
 
-
 class Pawn(Piece):
     """ The pawn piece. """  
 
@@ -124,20 +136,20 @@ class Pawn(Piece):
 
         # Regular move
         MOVE = (0, 1)
-        coord = tuple(map(operator.add, self.get_coord(), MOVE))
+        coord = self.get_new_coord(self.get_coord(), MOVE)
         if self.validate_move(coord):
             moves += coord
 
         # Starting move
         STARTING_MOVE = (0, 2)
-        coord = tuple(map(operator.add, self.get_coord(), STARTING_MOVE))
+        coord = self.get_new_coord(self.get_coord(), STARTING_MOVE)
         if not self.has_moved() and self.validate_move(coord):
             moves += coord
 
         # Attacks
         ATTACKS = [(-1, 1), (1, 1)]
         for attack in ATTACKS:
-            coord = tuple(map(operator.add, self.get_coord(), attack))
+            coord = self.get_new_coord(self.get_coord(), attack)
             if self.validate_attack(coord):
                 moves += coord
 
@@ -159,13 +171,13 @@ class Knight(Piece):
         # Regular move
         MOVES = [(-1, -2), (-1, 2), (1, -2), (-1, 2), (-2, -1), (-2, 1), (2, -1), (2, 1)]
         for move in MOVES:
-            coord = tuple(map(operator.add, self.get_coord(), move))
+            coord = self.get_new_coord(self.get_coord(), move)
             if self.validate_move(coord):
                 moves += coord
 
         # Attacks
         for attack in MOVES:
-            coord = tuple(map(operator.add, self.get_coord(), attack))
+            coord = self.get_new_coord(self.get_coord(), attack)
             if self.validate_attack(coord):
                 moves += coord
 
