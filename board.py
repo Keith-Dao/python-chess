@@ -2,7 +2,7 @@
 import operator
 
 # Files
-from constants import *
+from constants import BOARD_HEIGHT, BOARD_WIDTH
 
 class Board(object):
     """ Board the game is played on."""
