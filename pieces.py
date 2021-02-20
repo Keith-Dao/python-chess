@@ -7,6 +7,7 @@ from board import Board
 
 class Piece(object):
     """ A generic piece on the board """
+    MOVES = []
 
     def __init__(self, x:int, y:int, colour:int, board:Board):
         """
@@ -83,13 +84,16 @@ class Piece(object):
 
     def get_possible_moves(self):
         """ 
-        Abstract method.
         Gets all the possible moves.
 
         Returns:
             [(x, y), ...]: Array of x- y-coordinates that the piece can move to
         """
-        pass
+
+        moves = []
+        for move in MOVES:
+            moves += self.get_indefinite_moves(self.get_new_coord(self.get_coord(), move), move)
+        return moves
 
     def validate_move(self, coord:(int, int)):
         """ 
@@ -208,17 +212,6 @@ class Knight(Piece):
 class Queen(Piece):
     """ The queen piece. """
 
-    def get_possible_moves(self):
-        """ 
-        Gets all the possible moves.
+    MOVES = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
 
-        Returns:
-            [(x, y)]: Array of x- y-coordinates that the piece can move to
-        """
-
-        moves = []
-        MOVES = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
-        for move in MOVES:
-            moves += self.get_indefinite_moves(self.get_new_coord(self.get_coord(), move), move)
-        return moves
 
