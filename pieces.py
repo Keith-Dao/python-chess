@@ -142,3 +142,31 @@ class Pawn(Piece):
                 moves += coord
 
         return moves
+
+class Knight(Piece):
+    """ The knight piece. """
+
+    def get_possible_moves(self):
+        """ 
+        Gets all the possible moves.
+
+        Returns:
+            [(x, y)]: Array of x- y-coordinates that the piece can move to
+        """
+
+        moves = []
+
+        # Regular move
+        MOVES = [(-1, -2), (-1, 2), (1, -2), (-1, 2), (-2, -1), (-2, 1), (2, -1), (2, 1)]
+        for move in MOVES:
+            coord = tuple(map(operator.add, self.get_coord(), move))
+            if self.validate_move(coord):
+                moves += coord
+
+        # Attacks
+        for attack in MOVES:
+            coord = tuple(map(operator.add, self.get_coord(), attack))
+            if self.validate_attack(coord):
+                moves += coord
+
+        return moves
