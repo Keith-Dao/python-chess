@@ -182,3 +182,42 @@ class Knight(Piece):
                 moves += coord
 
         return moves
+
+class Queen(Piece):
+    """ The queen piece. """
+
+    def get_indefinite_moves(self, coord:(int, int), direction:(int, int)):
+        """ 
+        Gets all the valid moves in a direction indefinitely till it is not valid.
+        
+        Parameters:
+            coord ((int, int)): x- y-coordinate of the move to be validated
+            direction ((int, int)): x- y-direction of the the next move
+
+        Return:
+            [(x, y)]: Array of x- y-coordinates that the piece can move to
+        """
+
+        # Check that the queen can attack and stop checking
+        if self.validate_attack(coord):
+            return [coord]
+        # Check that the current move is valid and continue checking
+        if self.validate_move(coord):
+            return [coord] + self.get_indefinite_moves(self.get_new_coord(coord, direction), direction)
+        # Current coordinate is invalid
+        return []
+
+    def get_possible_moves(self):
+        """ 
+        Gets all the possible moves.
+
+        Returns:
+            [(x, y)]: Array of x- y-coordinates that the piece can move to
+        """
+
+        moves = []
+        MOVES = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+        for move in MOVES:
+            moves += self.get_indefinite_moves(self.get_new_coord(self.get_coord(), move), move)
+        return moves
+
