@@ -129,7 +129,7 @@ class Piece(object):
         if x < 0 or y < 0 or x >= BOARD_WIDTH or y >= BOARD_HEIGHT:
             return False
         # Check space is occupied by an opposing piece
-        return not self.board.is_empty_coord(coord) and self.board.get_slot(coord).get_colour() != self.colour
+        return not self.board.is_empty_coord(coord) and self.board.get_piece(coord).get_colour() != self.colour
 
     def get_indefinite_moves(self, coord:(int, int), direction:(int, int)):
         """ 
@@ -187,6 +187,7 @@ class Pawn(Piece):
 
         return moves
 
+
 class Knight(Piece):
     """ The knight piece. """
 
@@ -214,6 +215,7 @@ class Knight(Piece):
                 moves += coord
 
         return moves
+
 
 class Queen(Piece):
     """ The queen piece. """
@@ -262,10 +264,7 @@ class King(Piece):
             bool: True if the move is valid, else false
         """
        
-        if super().validate_move(coord):
-            # Check that the coordinate is not checkable
-            pass
-        return False
+        return super().validate_move(coord) and not self.is_coord_checked(coord):
 
     def validate_attack(self, coord:(int, int)):
         """
@@ -278,10 +277,7 @@ class King(Piece):
             bool: True if the attack is valid, else false
         """
        
-        if super().validate_attack(coord):
-            # Check that the coordinate is not checkable
-            pass
-        return False
+        return super().validate_attack(coord) and not self.is_coord_checked(coord):
 
     def get_possible_moves(self):
         """
@@ -303,3 +299,34 @@ class King(Piece):
             pass # TODO add logic
 
         return moves
+
+    def is_coord_checked(self, coord:((int, int))):
+        """
+        Checks that the new coordinate does not place the king in check.
+
+        Parameters:
+            coord ((int, int)): x- y-coordinate to check for check
+
+        Return:
+            bool: True if the coordinate would put the king in check, else false
+        """
+
+        # Check for recursive pieces
+        REC_DIRECTIONS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+
+        for direction in REC_DIRECTIONS:
+            piece = self.board.get_piece_in_direction(self.get_new_coord(coord, direction), direction)
+            if piece is not None and coord in piece.get_possible_moves():
+                return True
+        
+        # Check for knights
+        KNIGHT_DIRECTIONS = [(-1, -2), (-1, 2), (1, -2), (-1, 2), (-2, -1), (-2, 1), (2, -1), (2, 1)]
+
+        for direction in KNIGHT_DIRECTIONS:
+            piece = self.board.get_piece(self.get_new_coord(coord, direction))
+            if piece is Knight:
+                return True
+
+        # Coordinate is clear
+        return False
+        
