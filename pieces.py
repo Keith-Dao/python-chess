@@ -232,3 +232,74 @@ class Rook(Piece):
 
     MOVES = [(-1, 0), (0, -1), (0, 1), (1, 0)]
 
+
+class King(Piece):
+    """ The king piece. """
+
+    MOVES = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (-1, 0)]
+
+    def __init__(self, x:int, y:int, colour:int, board:Board):
+        """
+        Initialise the king piece.
+
+        Parameters:
+            x (int): x-coordinate (column) of the piece
+            y (int): y-coordinate (row) of the piece
+            colour (int): Enum value of the piece's colour
+            board (Board): Board the piece is on
+        """
+        super().__init__(x, y, colour, board)
+        self.checked = False
+
+    def validate_move(self, coord:(int, int)):
+        """
+        Validate the move.
+
+        Parameters:
+            coord ((int, int)): x- y-coordinate of the move to be validated
+
+        Returns:
+            bool: True if the move is valid, else false
+        """
+       
+        if super().validate_move(coord):
+            # Check that the coordinate is not checkable
+            pass
+        return False
+
+    def validate_attack(self, coord:(int, int)):
+        """
+        Validate the move.
+
+        Parameters:
+            coord ((int, int)): x- y-coordinate of the attack to be validated
+
+        Returns:
+            bool: True if the attack is valid, else false
+        """
+       
+        if super().validate_attack(coord):
+            # Check that the coordinate is not checkable
+            pass
+        return False
+
+    def get_possible_moves(self):
+        """
+        Gets all the possible moves.
+
+        Returns:
+            [(x, y), ...]: Array of x- y-coordinates that the piece can move to
+        """
+
+        moves = []
+        # Regular moves and attacks
+        for move in self.MOVES:
+            coord = self.get_new_coord(self.get_new_coord, move)
+            if self.validate_move(coord) or self.validate_attack(coord):
+                moves += coord
+        
+        # Castling
+        if not self.has_moved():
+            pass # TODO add logic
+
+        return moves
