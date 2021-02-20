@@ -215,3 +215,8 @@ class Queen(Piece):
     MOVES = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
 
 
+
+class Bishop(Piece):
+    """ The bishop piece. """
+
+    MOVES = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
