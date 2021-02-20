@@ -99,6 +99,9 @@ class Piece(object):
         """ 
         Checks that the move is valid.
 
+        Parameters:
+            coord ((int, int)): x- y-coordinate of the move to be validated
+
         Returns:
             bool: True if the move is valid, else false
         """
@@ -108,11 +111,14 @@ class Piece(object):
         if x < 0 or y < 0 or x >= BOARD_WIDTH or y >= BOARD_HEIGHT:
             return False
         # Check space is not occupied
-        return self.board.is_empty_slot(coord)
+        return self.board.is_empty_coord(coord)
 
     def validate_attack(self, coord:(int, int)):
         """ 
         Checks that the attack is valid.
+
+        Parameters:
+            coord ((int, int)): x- y-coordinate of the attack to be validated
 
         Returns:
             bool: True if the attack is valid, else false
@@ -123,7 +129,7 @@ class Piece(object):
         if x < 0 or y < 0 or x >= BOARD_WIDTH or y >= BOARD_HEIGHT:
             return False
         # Check space is occupied by an opposing piece
-        return not self.board.is_empty_slot(coord) and self.board.get_slot(coord).get_colour() != self.colour
+        return not self.board.is_empty_coord(coord) and self.board.get_slot(coord).get_colour() != self.colour
 
     def get_indefinite_moves(self, coord:(int, int), direction:(int, int)):
         """ 
@@ -225,3 +231,4 @@ class Rook(Piece):
     """ The rook piece. """
 
     MOVES = [(-1, 0), (0, -1), (0, 1), (1, 0)]
+

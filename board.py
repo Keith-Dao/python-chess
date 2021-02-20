@@ -7,7 +7,7 @@ class Board(object):
         """ Initialise an empty board with the correct dimensions. """
         self.board = [[None] * BOARD_WIDTH] * BOARD_HEIGHT
 
-    def is_empty_slot(self, coord:(int, int)):
+    def is_empty_coord(self, coord:(int, int)):
         """
         Check if the slot at the given coordinate is empty.
 
