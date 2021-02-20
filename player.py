@@ -1,16 +1,16 @@
+from pieces import Pieces
+from board import Board
+
 class Player(object):
     """ One of the players in the game. """
 
-    def __init__(self, colour:int):
+    def __init__(self, colour:int, board:Board):
         """
         Initialise the player.
 
         Parameters
             colour (int): The enum value of the player's colour
+            board (Board): The board the player is playing on
         """
         self.colour = colour
-        self.setup_pieces()
-
-    def setup_pieces(self):
-        """ Gives the player all the starting pieces. """
-        pass
+        self.board = Pieces(colour, board)
