@@ -1,25 +1,18 @@
 # Import modules
 import pygame
 
-# Import constants
-from constants import * 
-
 # Functions
-def setup():
-    """ Setup the game board """
-    pass
-
-
-def game():
-    """ Play the game """
-    gameOver = False
-    while not gameOver:
-        pass
-
 def main():
-    """ Setup and begin the game """
-    setup()
-    game()
+    """ Setup the game display. """
+    pygame.init()
+    pygame.display.set_mode((640, 240))
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+    print("quitting")
+    pygame.quit()
 
 if __name__ == "__main__":
     main()
