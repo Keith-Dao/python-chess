@@ -296,7 +296,12 @@ class King(Piece):
         
         # Castling
         if not self.has_moved():
-           pass # TODO add logic
+            CASTLES = [(0, -4), (0, 3)]
+            for move in CASTLES:
+                coord = self.get_new_coord(self.get_coord(), move)
+                piece = self.board.get_piece(coord)
+                if piece is Rook and not piece.has_moved():
+                    moves += coord
 
         return moves
 
