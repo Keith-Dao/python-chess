@@ -2,7 +2,7 @@
 import operator
 
 # Files
-from constants import *
+from constants import BOARD_HEIGHT, BOARD_WIDTH, Colours
 from board import Board
 
 class Piece(object):
@@ -343,4 +343,57 @@ class King(Piece):
 
         # Coordinate is clear
         return False
+        
+
+class Pieces(object):
+    """ Collection of pieces. """
+    ROOK_COLUMNS = [0, 7]
+    KNIGHT_COLUMNS = [1, 6]
+    BISHOP_COLUMNS = [2, 5]
+    QUEEN_COLUMN = 3
+    KING_COLUMN = 4
+
+    def __init__(self, colour:int, board:Board):
+        """
+        Initialise player's pieces.
+
+        Parameters:
+            colour (int): Enum value of the piece's colour
+            board (Board): Board the pieces are on
+        """
+        # Row number
+        front = 1
+        back = 0
+        if colour == Colours.WHITE:
+            front = BOARD_HEIGHT - 2
+            back = BOARD_HEIGHT - 1
+
+        # Front row pieces
+        self.pawns = []
+        for col in range(0, BOARD_WIDTH):
+            self.pawns.append(Pawn(col, front, colour, board))
+
+        # Back row pieces
+        self.rooks = []
+        self.knights = []
+        self.bishops = []
+        self.queens = []
+        
+        # Rooks
+        for col in self.ROOK_COLUMNS:
+            self.rooks.append(Rook(col, back, colour, board))
+
+        # Knights
+        for col in self.KNIGHT_COLUMNS:
+            self.knights.append(Knight(col, back, colour, board))
+
+        # Bishops
+        for col in self.BISHOP_COLUMNS:
+            self.bishops.append(Bishop(col, back, colour, board))
+
+        # Queen
+        self.queens.append(Queen(self.QUEEN_COLUMN, back, colour, board))
+
+        # King
+        self.king = King(self.KING_COLUMN, back, colour, board)
         
