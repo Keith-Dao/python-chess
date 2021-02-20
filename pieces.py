@@ -290,13 +290,13 @@ class King(Piece):
         moves = []
         # Regular moves and attacks
         for move in self.MOVES:
-            coord = self.get_new_coord(self.get_new_coord, move)
+            coord = self.get_new_coord(self.get_coord(), move)
             if self.validate_move(coord) or self.validate_attack(coord):
                 moves += coord
         
         # Castling
         if not self.has_moved():
-            pass # TODO add logic
+           pass # TODO add logic
 
         return moves
 
