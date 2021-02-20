@@ -300,6 +300,15 @@ class King(Piece):
 
         return moves
 
+    def in_check(self):
+        """ 
+        Checks if the king is still in check.
+
+        Returns:
+            bool: True if the king's current coordinate is in check.
+        """
+        return self.is_coord_checked(self.get_coord())
+
     def is_coord_checked(self, coord:((int, int))):
         """
         Checks that the new coordinate does not place the king in check.
