@@ -1,5 +1,6 @@
 # Modules
 import operator
+from typing import List, Tuple
 
 # Files
 from constants import BOARD_HEIGHT, BOARD_WIDTH, Colours
@@ -20,7 +21,7 @@ class Piece(object):
             x (int): x-coordinate (column) of the piece
             y (int): y-coordinate (row) of the piece
             colour (int): Enum value of the piece's colour
-            board (Board): Board the piece is on
+            board (board.Board): Board the piece is on
         """
         self.x = x
         self.y = y
@@ -85,12 +86,12 @@ class Piece(object):
         """ Set the piece to be captured. """
         self.captured = True
 
-    def get_possible_moves(self) -> List[(int, int)]:
+    def get_possible_moves(self) -> List[Tuple[int, int]]:
         """ 
         Gets all the possible moves.
 
         Returns:
-            List[(int, int)]: Array of x- y-coordinates that the piece can move to
+            list[tuple[int, int]]: Array of x- y-coordinates that the piece can move to
         """
 
         moves = []
@@ -139,7 +140,7 @@ class Piece(object):
             # Piece does not exist
             return False
 
-    def get_indefinite_moves(self, coord: (int, int), direction: (int, int)) -> List[(int, int)]:
+    def get_indefinite_moves(self, coord: (int, int), direction: (int, int)) -> List[Tuple[int, int]]:
         """ 
         Gets all the valid moves in a direction indefinitely till it is not valid.
         
@@ -148,7 +149,7 @@ class Piece(object):
             direction ((int, int)): x- y-direction of the the next move
 
         Return:
-            List[(int, int)]: Array of x- y-coordinates that the piece can move to
+            list[tuple[int, int]]: Array of x- y-coordinates that the piece can move to
         """
 
         # Check that the queen can attack and stop checking
@@ -160,16 +161,15 @@ class Piece(object):
         # Current coordinate is invalid
         return []
 
-
 class Pawn(Piece):
     """ The pawn piece. """  
 
-    def get_possible_moves(self) -> List[(int, int)]:
+    def get_possible_moves(self) -> List[Tuple[int, int]]:
         """ 
         Gets all the possible moves.
 
         Returns:
-            List[(int, int)]: Array of x- y-coordinates that the piece can move to
+            list[tuple[int, int]]: Array of x- y-coordinates that the piece can move to
         """
         
         moves = []
@@ -199,12 +199,12 @@ class Pawn(Piece):
 class Knight(Piece):
     """ The knight piece. """
 
-    def get_possible_moves(self) -> List[(int, int)]:
+    def get_possible_moves(self) -> List[Tuple[int, int]]:
         """ 
         Gets all the possible moves.
 
         Returns:
-            List[(int, int)]: Array of x- y-coordinates that the piece can move to
+            list[tuple[int, int]]: Array of x- y-coordinates that the piece can move to
         """
 
         moves = []
@@ -256,7 +256,7 @@ class King(Piece):
             x (int): x-coordinate (column) of the piece
             y (int): y-coordinate (row) of the piece
             colour (int): Enum value of the piece's colour
-            board (Board): Board the piece is on
+            board (board.Board): Board the piece is on
         """
         super().__init__(x, y, colour, board)
         self.checked = False
@@ -287,12 +287,12 @@ class King(Piece):
        
         return super().validate_attack(coord) and not self.is_coord_checked(coord)
 
-    def get_possible_moves(self) -> List[(int, int)]:
+    def get_possible_moves(self) -> List[Tuple[int, int]]:
         """
         Gets all the possible moves.
 
         Returns:
-            List[(int, int)]: Array of x- y-coordinates that the piece can move to
+            list[tuple[int, int]]: Array of x- y-coordinates that the piece can move to
         """
 
         moves = []
@@ -380,7 +380,7 @@ class Pieces(object):
 
         Parameters:
             colour (int): Enum value of the piece's colour
-            board (Board): Board the pieces are on
+            board (board.Board): Board the pieces are on
         """
         # Row number
         front = 1
