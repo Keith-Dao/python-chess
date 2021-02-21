@@ -4,7 +4,7 @@ from board import Board
 class Player(object):
     """ One of the players in the game. """
 
-    def __init__(self, colour:int, board:Board):
+    def __init__(self, colour: int, board: Board) -> None:
         """
         Initialise the player.
 

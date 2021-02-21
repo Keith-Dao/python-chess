@@ -5,7 +5,13 @@ import pygame, sys
 from constants import *
 
 # Functions
-def drawTiles(screen: pygame.Surface):
+def drawTiles(screen: pygame.Surface) -> None:
+    """
+    Draw the tiles onto the game display.
+
+    Parameters:
+        screen (pygame.Surface): The game display
+    """
     # Background / UI colour
     screen.fill((100,100,100))
 
@@ -22,7 +28,7 @@ def drawTiles(screen: pygame.Surface):
             pygame.draw.rect(screen, colour, (x, y, SQUARE_DIMENSIONS, SQUARE_DIMENSIONS))
 
 
-def main():
+def main() -> None:
     """ Setup the game display. """
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) 

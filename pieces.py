@@ -9,7 +9,7 @@ class Piece(object):
     """ A generic piece on the board """
     MOVES = []
 
-    def __init__(self, x:int, y:int, colour:int, board:Board):
+    def __init__(self, x: int, y: int, colour: int, board: Board) -> None:
         """
         Initialise the generic piece.
 
@@ -26,16 +26,16 @@ class Piece(object):
         self.moved = False
         self.board = board
 
-    def get_coord(self):
+    def get_coord(self) -> (int, int):
         """ 
         Get the piece's coordinates.
 
         Returns:
-            ((int, int)): x- y-coordinate of the piece
+            (int, int): x- y-coordinate of the piece
         """
         return (self.x, self.y)
 
-    def get_new_coord(self, coord:(int, int), direction:(int, int)):
+    def get_new_coord(self, coord: (int, int), direction: (int, int)) -> (int, int):
         """
         Get the coordinate of the next position.
 
@@ -48,7 +48,7 @@ class Piece(object):
         """
         return tuple(map(operator.add, coord, direction))
 
-    def get_colour(self):
+    def get_colour(self) -> int:
         """
         Get the piece's colour.
 
@@ -57,7 +57,7 @@ class Piece(object):
         """
         return self.colour
 
-    def has_moved(self):
+    def has_moved(self) -> bool:
         """
         Checks whether the piece has moved.
         
@@ -66,7 +66,7 @@ class Piece(object):
         """
         return self.moved
 
-    def move(self, x:int, y:int):
+    def move(self, x: int, y: int) -> None:
         """ 
         Move the piece.
 
@@ -78,16 +78,16 @@ class Piece(object):
         self.y = y
         self.moved = True
     
-    def set_captured(self):
+    def set_captured(self) -> None:
         """ Set the piece to be captured. """
         self.captured = True
 
-    def get_possible_moves(self):
+    def get_possible_moves(self) -> List[(int, int)]:
         """ 
         Gets all the possible moves.
 
         Returns:
-            [(x, y), ...]: Array of x- y-coordinates that the piece can move to
+            List[(int, int)]: Array of x- y-coordinates that the piece can move to
         """
 
         moves = []
@@ -95,7 +95,7 @@ class Piece(object):
             moves += self.get_indefinite_moves(self.get_new_coord(self.get_coord(), move), move)
         return moves
 
-    def validate_move(self, coord:(int, int)):
+    def validate_move(self, coord: (int, int)) -> bool:
         """ 
         Checks that the move is valid.
 
@@ -113,7 +113,7 @@ class Piece(object):
         # Check space is not occupied
         return self.board.is_empty_coord(coord)
 
-    def validate_attack(self, coord:(int, int)):
+    def validate_attack(self, coord: (int, int)) -> bool:
         """ 
         Checks that the attack is valid.
 
@@ -131,7 +131,7 @@ class Piece(object):
         # Check space is occupied by an opposing piece
         return not self.board.is_empty_coord(coord) and self.board.get_piece(coord).get_colour() != self.colour
 
-    def get_indefinite_moves(self, coord:(int, int), direction:(int, int)):
+    def get_indefinite_moves(self, coord: (int, int), direction: (int, int)) -> List[(int, int)]:
         """ 
         Gets all the valid moves in a direction indefinitely till it is not valid.
         
@@ -140,7 +140,7 @@ class Piece(object):
             direction ((int, int)): x- y-direction of the the next move
 
         Return:
-            [(x, y)]: Array of x- y-coordinates that the piece can move to
+            List[(int, int)]: Array of x- y-coordinates that the piece can move to
         """
 
         # Check that the queen can attack and stop checking
@@ -156,12 +156,12 @@ class Piece(object):
 class Pawn(Piece):
     """ The pawn piece. """  
 
-    def get_possible_moves(self):
+    def get_possible_moves(self) -> List[(int, int)]:
         """ 
         Gets all the possible moves.
 
         Returns:
-            [(x, y)]: Array of x- y-coordinates that the piece can move to
+            List[(int, int)]: Array of x- y-coordinates that the piece can move to
         """
         
         moves = []
@@ -191,12 +191,12 @@ class Pawn(Piece):
 class Knight(Piece):
     """ The knight piece. """
 
-    def get_possible_moves(self):
+    def get_possible_moves(self) -> List[(int, int)]:
         """ 
         Gets all the possible moves.
 
         Returns:
-            [(x, y)]: Array of x- y-coordinates that the piece can move to
+            List[(int, int)]: Array of x- y-coordinates that the piece can move to
         """
 
         moves = []
@@ -240,7 +240,7 @@ class King(Piece):
 
     MOVES = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (-1, 0)]
 
-    def __init__(self, x:int, y:int, colour:int, board:Board):
+    def __init__(self, x: int, y: int, colour: int, board: Board) -> None:
         """
         Initialise the king piece.
 
@@ -253,7 +253,7 @@ class King(Piece):
         super().__init__(x, y, colour, board)
         self.checked = False
 
-    def validate_move(self, coord:(int, int)):
+    def validate_move(self, coord: (int, int)) -> bool:
         """
         Validate the move.
 
@@ -266,7 +266,7 @@ class King(Piece):
        
         return super().validate_move(coord) and not self.is_coord_checked(coord)
 
-    def validate_attack(self, coord:(int, int)):
+    def validate_attack(self, coord: (int, int)) -> bool:
         """
         Validate the move.
 
@@ -279,12 +279,12 @@ class King(Piece):
        
         return super().validate_attack(coord) and not self.is_coord_checked(coord)
 
-    def get_possible_moves(self):
+    def get_possible_moves(self) -> List[(int, int)]:
         """
         Gets all the possible moves.
 
         Returns:
-            [(x, y), ...]: Array of x- y-coordinates that the piece can move to
+            List[(int, int)]: Array of x- y-coordinates that the piece can move to
         """
 
         moves = []
@@ -305,7 +305,7 @@ class King(Piece):
 
         return moves
 
-    def in_check(self):
+    def in_check(self) -> bool:
         """ 
         Checks if the king is still in check.
 
@@ -314,7 +314,7 @@ class King(Piece):
         """
         return self.is_coord_checked(self.get_coord())
 
-    def is_coord_checked(self, coord:((int, int))):
+    def is_coord_checked(self, coord: (int, int)) -> bool:
         """
         Checks that the new coordinate does not place the king in check.
 
@@ -353,7 +353,7 @@ class Pieces(object):
     QUEEN_COLUMN = 3
     KING_COLUMN = 4
 
-    def __init__(self, colour:int, board:Board):
+    def __init__(self, colour: int, board: Board) -> None:
         """
         Initialise player's pieces.
 

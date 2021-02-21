@@ -3,15 +3,16 @@ import operator
 
 # Files
 from constants import BOARD_HEIGHT, BOARD_WIDTH
+from pieces import Piece
 
 class Board(object):
     """ Board the game is played on."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """ Initialise an empty board with the correct dimensions. """
         self.board = [[None] * BOARD_WIDTH] * BOARD_HEIGHT
 
-    def is_empty_coord(self, coord:(int, int)):
+    def is_empty_coord(self, coord: (int, int)) -> bool:
         """
         Check if the slot at the given coordinate is empty.
 
@@ -24,7 +25,7 @@ class Board(object):
 
         return self.is_in_bounds(coord) and self.get_piece(coord) is None
 
-    def is_in_bounds(self, coord:(int, int)):
+    def is_in_bounds(self, coord: (int, int)) -> bool:
         """
         Checks if the given coordinate is in bounds.
 
@@ -37,7 +38,7 @@ class Board(object):
         x, y = coord
         return not (x < 0 or y < 0 or x >= BOARD_WIDTH or y >= BOARD_HEIGHT)
 
-    def get_piece(self, coord:(int, int)):
+    def get_piece(self, coord: (int, int)) -> Piece:
         """
         Gets the piece on the board at the given coordinate
 
@@ -51,7 +52,7 @@ class Board(object):
         x, y = coord
         return self.board[y][x]
 
-    def get_new_coord(self, coord:(int, int), direction:(int, int)):
+    def get_new_coord(self, coord: (int, int), direction: (int, int)) -> (int, int):
         """
         Get the coordinate of the next position.
 
@@ -64,7 +65,7 @@ class Board(object):
         """
         return tuple(map(operator.add, coord, direction))
 
-    def get_piece_in_direction(self, coord:(int, int), direction:(int, int)):
+    def get_piece_in_direction(self, coord:(int, int), direction:(int, int)) -> Piece:
         """ 
         Recursively checks for a piece in a given direction.
 
