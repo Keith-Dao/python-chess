@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 # Files
 from constants import BOARD_HEIGHT, BOARD_WIDTH, Colours
-from board import Board
+from board import BoardType
 
 # Exceptions
 from exceptions import EmptyCoordinateException
@@ -13,7 +13,7 @@ class Piece(object):
     """ A generic piece on the board """
     MOVES = []
 
-    def __init__(self, x: int, y: int, colour: int, board: Board) -> None:
+    def __init__(self, x: int, y: int, colour: int, board: BoardType) -> None:
         """
         Initialise the generic piece.
 
@@ -21,7 +21,7 @@ class Piece(object):
             x (int): x-coordinate (column) of the piece
             y (int): y-coordinate (row) of the piece
             colour (int): Enum value of the piece's colour
-            board (board.Board): Board the piece is on
+            board (BoardType): Board the piece is on
         """
         self.x = x
         self.y = y
@@ -161,6 +161,7 @@ class Piece(object):
         # Current coordinate is invalid
         return []
 
+
 class Pawn(Piece):
     """ The pawn piece. """  
 
@@ -248,7 +249,7 @@ class King(Piece):
 
     MOVES = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (-1, 0)]
 
-    def __init__(self, x: int, y: int, colour: int, board: Board) -> None:
+    def __init__(self, x: int, y: int, colour: int, board: BoardType) -> None:
         """
         Initialise the king piece.
 
@@ -256,7 +257,7 @@ class King(Piece):
             x (int): x-coordinate (column) of the piece
             y (int): y-coordinate (row) of the piece
             colour (int): Enum value of the piece's colour
-            board (board.Board): Board the piece is on
+            board (BoardType): Board the piece is on
         """
         super().__init__(x, y, colour, board)
         self.checked = False
@@ -374,13 +375,13 @@ class Pieces(object):
     QUEEN_COLUMN = 3
     KING_COLUMN = 4
 
-    def __init__(self, colour: int, board: Board) -> None:
+    def __init__(self, colour: int, board: BoardType) -> None:
         """
         Initialise player's pieces.
 
         Parameters:
             colour (int): Enum value of the piece's colour
-            board (board.Board): Board the pieces are on
+            board (BoardType): Board the pieces are on
         """
         # Row number
         front = 1

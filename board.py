@@ -1,14 +1,18 @@
 # Modules
 import operator
 
-# Files
+# Constants
 from constants import BOARD_HEIGHT, BOARD_WIDTH
-from pieces import Piece
 
 # Exceptions
 from exceptions import EmptyCoordinateException
 
-class Board(object):
+class BoardType(object):
+    """ Generic board to allow for compilation. """
+    pass
+
+from pieces import Piece
+class Board(BoardType):
     """ Board the game is played on."""
 
     def __init__(self) -> None:
@@ -73,7 +77,7 @@ class Board(object):
         """
         return tuple(map(operator.add, coord, direction))
 
-    def get_piece_in_direction(self, coord:(int, int), direction:(int, int)) -> Piece:
+    def get_piece_in_direction(self, coord: (int, int), direction: (int, int)) -> Piece:
         """ 
         Recursively checks for a piece in a given direction.
 
