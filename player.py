@@ -1,5 +1,5 @@
-from pieces import Pieces
 from board import Board
+from pieces import Pieces
 
 class Player(object):
     """ One of the players in the game. """
@@ -12,5 +12,5 @@ class Player(object):
             colour (int): The enum value of the player's colour
             board (Board): The board the player is playing on
         """
-        self.colour = colour
-        self.board = Pieces(colour, board)
+        self.colour: int = colour
+        self.pieces: Pieces = Pieces(colour, board)
