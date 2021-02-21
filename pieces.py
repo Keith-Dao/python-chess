@@ -305,17 +305,22 @@ class King(Piece):
         
         # Castling
         if not self.has_moved():
-            CASTLES = [(0, -4), (0, 3)]
-            for move in CASTLES:
-                coord = self.get_new_coord(self.get_coord(), move)
-
+            CASTLES = {
+                (-1, 0): (-2, 0),
+                (1, 0): (2, 0)
+            }
+            for rookMove, kingMove in CASTLES:
+                rookCoord = self.get_new_coord(self.get_coord(), rookMove)
+                
                 try:
-                    piece = self.board.get_piece(coord)
+                    piece = self.board.get_piece_in_direction(rookCoord, rookMove)
                 except EmptyCoordinateException:
                     continue
 
                 if piece is Rook and not piece.has_moved():
-                    moves += coord
+                    coord = self.get_new_coord(self.get_coord(), kingMove)
+                    if self.validate_move(coord):
+                        moves += coord
 
         return moves
 
