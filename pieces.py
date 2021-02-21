@@ -1,14 +1,19 @@
 # Modules
 import operator
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
 # Files
 from constants import BOARD_HEIGHT, BOARD_WIDTH, Colours
-from board import BoardType
 
 # Exceptions
 from exceptions import EmptyCoordinateException
 
+# Board type
+class BoardType(object):
+    """ Generic board to allow for compilation. """
+    pass
+
+# Type of pieces
 class Piece(object):
     """ A generic piece on the board """
     MOVES = []
@@ -23,11 +28,11 @@ class Piece(object):
             colour (int): Enum value of the piece's colour
             board (BoardType): Board the piece is on
         """
-        self.x = x
-        self.y = y
-        self.colour = colour
-        self.captured = False
-        self.moved = False
+        self.x: int = x
+        self.y: int = y
+        self.colour: int = colour
+        self.captured: bool = False
+        self.moved: bool = False
         self.board = board
 
     def get_coord(self) -> (int, int):
@@ -94,7 +99,7 @@ class Piece(object):
             list[tuple[int, int]]: Array of x- y-coordinates that the piece can move to
         """
 
-        moves = []
+        moves: List[Tuple[int, int]] = []
         for move in self.MOVES:
             moves += self.get_indefinite_moves(self.get_new_coord(self.get_coord(), move), move)
         return moves
@@ -173,24 +178,24 @@ class Pawn(Piece):
             list[tuple[int, int]]: Array of x- y-coordinates that the piece can move to
         """
         
-        moves = []
+        moves: List[Tuple[int, int]] = []
 
         # Regular move
-        MOVE = (0, 1)
-        coord = self.get_new_coord(self.get_coord(), MOVE)
+        MOVE: Tuple[int, int] = (0, 1)
+        coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), MOVE)
         if self.validate_move(coord):
             moves += coord
 
         # Starting move
-        STARTING_MOVE = (0, 2)
-        coord = self.get_new_coord(self.get_coord(), STARTING_MOVE)
+        STARTING_MOVE: Tuple[int, int] = (0, 2)
+        coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), STARTING_MOVE)
         if not self.has_moved() and self.validate_move(coord):
             moves += coord
 
         # Attacks
-        ATTACKS = [(-1, 1), (1, 1)]
+        ATTACKS: List[Tuple[int, int]] = [(-1, 1), (1, 1)]
         for attack in ATTACKS:
-            coord = self.get_new_coord(self.get_coord(), attack)
+            coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), attack)
             if self.validate_attack(coord):
                 moves += coord
 
@@ -208,18 +213,18 @@ class Knight(Piece):
             list[tuple[int, int]]: Array of x- y-coordinates that the piece can move to
         """
 
-        moves = []
+        moves: List[Tuple[int, int]] = []
 
         # Regular move
-        MOVES = [(-1, -2), (-1, 2), (1, -2), (-1, 2), (-2, -1), (-2, 1), (2, -1), (2, 1)]
+        MOVES: List[Tuple[int, int]] = [(-1, -2), (-1, 2), (1, -2), (-1, 2), (-2, -1), (-2, 1), (2, -1), (2, 1)]
         for move in MOVES:
-            coord = self.get_new_coord(self.get_coord(), move)
+            coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), move)
             if self.validate_move(coord):
                 moves += coord
 
         # Attacks
         for attack in MOVES:
-            coord = self.get_new_coord(self.get_coord(), attack)
+            coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), attack)
             if self.validate_attack(coord):
                 moves += coord
 
@@ -229,25 +234,25 @@ class Knight(Piece):
 class Queen(Piece):
     """ The queen piece. """
 
-    MOVES = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+    MOVES: List[Tuple[int, int]] = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
 
 
 class Bishop(Piece):
     """ The bishop piece. """
 
-    MOVES = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
+    MOVES: List[Tuple[int, int]] = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
 
 
 class Rook(Piece):
     """ The rook piece. """
 
-    MOVES = [(-1, 0), (0, -1), (0, 1), (1, 0)]
+    MOVES: List[Tuple[int, int]] = [(-1, 0), (0, -1), (0, 1), (1, 0)]
 
 
 class King(Piece):
     """ The king piece. """
 
-    MOVES = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (-1, 0)]
+    MOVES: List[Tuple[int, int]] = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (-1, 0)]
 
     def __init__(self, x: int, y: int, colour: int, board: BoardType) -> None:
         """
@@ -260,7 +265,7 @@ class King(Piece):
             board (BoardType): Board the piece is on
         """
         super().__init__(x, y, colour, board)
-        self.checked = False
+        self.checked: bool = False
 
     def validate_move(self, coord: (int, int)) -> bool:
         """
@@ -296,29 +301,29 @@ class King(Piece):
             list[tuple[int, int]]: Array of x- y-coordinates that the piece can move to
         """
 
-        moves = []
+        moves: List[Tuple[int, int]] = []
         # Regular moves and attacks
         for move in self.MOVES:
-            coord = self.get_new_coord(self.get_coord(), move)
+            coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), move)
             if self.validate_move(coord) or self.validate_attack(coord):
                 moves += coord
         
         # Castling
         if not self.has_moved():
-            CASTLES = {
+            CASTLES: Dict[Tuple[int, int], Tuple[int, int]] = { # Map rook's direction to king's final coordinate
                 (-1, 0): (-2, 0),
                 (1, 0): (2, 0)
-            }
+            } 
             for rookMove, kingMove in CASTLES:
-                rookCoord = self.get_new_coord(self.get_coord(), rookMove)
+                rookCoord: Tuple[int, int] = self.get_new_coord(self.get_coord(), rookMove)
                 
                 try:
-                    piece = self.board.get_piece_in_direction(rookCoord, rookMove)
+                    piece: Piece = self.board.get_piece_in_direction(rookCoord, rookMove)
                 except EmptyCoordinateException:
                     continue
 
                 if piece is Rook and not piece.has_moved():
-                    coord = self.get_new_coord(self.get_coord(), kingMove)
+                    coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), kingMove)
                     if self.validate_move(coord):
                         moves += coord
 
@@ -345,11 +350,11 @@ class King(Piece):
         """
 
         # Check for recursive pieces
-        REC_DIRECTIONS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+        REC_DIRECTIONS: List[Tuple[int, int]] = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
 
         for direction in REC_DIRECTIONS:
             try:
-                piece = self.board.get_piece_in_direction(self.get_new_coord(coord, direction), direction)
+                piece: Piece = self.board.get_piece_in_direction(self.get_new_coord(coord, direction), direction)
             except EmptyCoordinateException:
                 continue
 
@@ -357,11 +362,11 @@ class King(Piece):
                 return True
         
         # Check for knights
-        KNIGHT_DIRECTIONS = [(-1, -2), (-1, 2), (1, -2), (-1, 2), (-2, -1), (-2, 1), (2, -1), (2, 1)]
+        KNIGHT_DIRECTIONS: List[Tuple[int, int]] = [(-1, -2), (-1, 2), (1, -2), (-1, 2), (-2, -1), (-2, 1), (2, -1), (2, 1)]
 
         for direction in KNIGHT_DIRECTIONS:
             try:
-                piece = self.board.get_piece(self.get_new_coord(coord, direction))
+                piece: Piece = self.board.get_piece(self.get_new_coord(coord, direction))
             except EmptyCoordinateException:
                 continue
 
@@ -374,11 +379,11 @@ class King(Piece):
 
 class Pieces(object):
     """ Collection of pieces. """
-    ROOK_COLUMNS = [0, 7]
-    KNIGHT_COLUMNS = [1, 6]
-    BISHOP_COLUMNS = [2, 5]
-    QUEEN_COLUMN = 3
-    KING_COLUMN = 4
+    ROOK_COLUMNS: List[int] = [0, 7]
+    KNIGHT_COLUMNS: List[int] = [1, 6]
+    BISHOP_COLUMNS: List[int] = [2, 5]
+    QUEEN_COLUMN: List[int] = 3
+    KING_COLUMN: List[int] = 4
 
     def __init__(self, colour: int, board: BoardType) -> None:
         """
@@ -389,22 +394,22 @@ class Pieces(object):
             board (BoardType): Board the pieces are on
         """
         # Row number
-        front = 1
-        back = 0
+        front: int = 1
+        back: int = 0
         if colour == Colours.WHITE.value:
-            front = BOARD_HEIGHT - 2
-            back = BOARD_HEIGHT - 1
+            front: int = BOARD_HEIGHT - 2
+            back: int = BOARD_HEIGHT - 1
 
         # Front row pieces
-        self.pawns = []
+        self.pawns: List[Pawn] = []
         for col in range(0, BOARD_WIDTH):
             self.pawns.append(Pawn(col, front, colour, board))
 
         # Back row pieces
-        self.rooks = []
-        self.knights = []
-        self.bishops = []
-        self.queens = []
+        self.rooks: List[Rook] = []
+        self.knights: List[Knight] = []
+        self.bishops: List[Bishop] = []
+        self.queens: List[Queen] = []
         
         # Rooks
         for col in self.ROOK_COLUMNS:
@@ -422,5 +427,5 @@ class Pieces(object):
         self.queens.append(Queen(self.QUEEN_COLUMN, back, colour, board))
 
         # King
-        self.king = King(self.KING_COLUMN, back, colour, board)
+        self.king: King = King(self.KING_COLUMN, back, colour, board)
         

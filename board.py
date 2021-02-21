@@ -7,17 +7,15 @@ from constants import BOARD_HEIGHT, BOARD_WIDTH
 # Exceptions
 from exceptions import EmptyCoordinateException
 
-class BoardType(object):
-    """ Generic board to allow for compilation. """
-    pass
+# Files
+from pieces import Piece, BoardType
 
-from pieces import Piece
 class Board(BoardType):
     """ Board the game is played on."""
 
     def __init__(self) -> None:
         """ Initialise an empty board with the correct dimensions. """
-        self.board = [[None] * BOARD_WIDTH] * BOARD_HEIGHT
+        self.board: List[List[Piece]] = [[None] * BOARD_WIDTH] * BOARD_HEIGHT
 
     def is_empty_coord(self, coord: (int, int)) -> bool:
         """

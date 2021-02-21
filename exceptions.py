@@ -13,4 +13,4 @@ class EmptyCoordinateException(Exception):
         Parameters:
             coord ((int, int)): The empty x- y-coordinate
         """
-        self.message = f'The coordinate {coord} is empty.'
+        self.message: str = f'The coordinate {coord} is empty.'
