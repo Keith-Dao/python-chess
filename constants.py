@@ -9,6 +9,6 @@ class Colours(Enum):
     BLACK = 1
 
 # Screen dimesions
-SCREEN_WIDTH = SCREEN_HEIGHT = 800 #pixels
+SCREEN_WIDTH = SCREEN_HEIGHT = 700 #pixels
 SQUARE_DIMENSIONS = 75 # pixels
-UI_WIDTH = UI_HEIGHT = 100 # pixels
+UI_WIDTH = UI_HEIGHT = 50 # pixels
