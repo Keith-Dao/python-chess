@@ -34,6 +34,7 @@ class Piece(object):
         self.captured: bool = False
         self.moved: bool = False
         self.board = board
+        self.board.add_piece(self)
 
     def get_coord(self) -> (int, int):
         """ 

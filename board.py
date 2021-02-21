@@ -15,7 +15,8 @@ class Board(BoardType):
 
     def __init__(self) -> None:
         """ Initialise an empty board with the correct dimensions. """
-        self.board: List[List[Piece]] = [[None] * BOARD_WIDTH] * BOARD_HEIGHT
+        self.board: List[List[Piece]] = [[None] * BOARD_WIDTH for _ in range(BOARD_HEIGHT)]
+        print(self.board)
 
     def is_empty_coord(self, coord: (int, int)) -> bool:
         """
@@ -99,3 +100,13 @@ class Board(BoardType):
             return self.get_piece(coord)
         except EmptyCoordinateException:
             return self.get_piece_in_direction(self.get_new_coord(coord, direction), direction)
+
+    def add_piece(self, piece: Piece) -> None:
+        """
+        Adds the piece to the board.
+
+        Parameters:
+            piece (Piece): Piece to be added
+        """
+        x, y = piece.get_coord()
+        self.board[y][x] = piece
