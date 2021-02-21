@@ -364,7 +364,7 @@ class Pieces(object):
         # Row number
         front = 1
         back = 0
-        if colour == Colours.WHITE:
+        if colour == Colours.WHITE.value:
             front = BOARD_HEIGHT - 2
             back = BOARD_HEIGHT - 1
 
