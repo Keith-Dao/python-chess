@@ -5,6 +5,9 @@ import operator
 from constants import BOARD_HEIGHT, BOARD_WIDTH
 from pieces import Piece
 
+# Exceptions
+from exceptions import EmptyCoordinateException
+
 class Board(object):
     """ Board the game is played on."""
 
@@ -46,10 +49,15 @@ class Board(object):
             coord ((int, int)): x- y-coordinate to get the piece from
 
         Returns:
-            Piece / None: Piece at the coordinate or None if there is no piece
+            Piece: Piece at the coordinate
+        
+        Raises:
+            EmptyCoordinateException: If there is no piece at the coordinate
         """
 
         x, y = coord
+        if self.board[y][x] is None:
+            raise EmptyCoordinateException(coord)
         return self.board[y][x]
 
     def get_new_coord(self, coord: (int, int), direction: (int, int)) -> (int, int):
@@ -74,15 +82,18 @@ class Board(object):
             direction ((int, int)): x- y-direction to check for if there is not piece
 
         Returns:
-            Piece / None: First piece to be found or None if coordinate is invalid
+            Piece: First piece to be found
+
+        Raises:
+            EmptyCoordinateException: If there is no piece at the coordinate
         """
         
         # Check bounds
         if not self.is_in_bounds(coord):
-            return None
+            raise EmptyCoordinateException
 
-        # Check if coordinate is empty
-        if self.is_empty_coord(coord) is None:
+        # Get the piece
+        try:
+            return self.get_piece(coord)
+        except EmptyCoordinateException:
             return self.get_piece_in_direction(self.get_new_coord(coord, direction), direction)
-        # There is a piece at the slot
-        return self.get_piece(coord)
