@@ -5,6 +5,9 @@ import operator
 from constants import BOARD_HEIGHT, BOARD_WIDTH, Colours
 from board import Board
 
+# Exceptions
+from exceptions import EmptyCoordinateException
+
 class Piece(object):
     """ A generic piece on the board """
     MOVES = []
@@ -128,8 +131,13 @@ class Piece(object):
         x, y = coord
         if x < 0 or y < 0 or x >= BOARD_WIDTH or y >= BOARD_HEIGHT:
             return False
-        # Check space is occupied by an opposing piece
-        return not self.board.is_empty_coord(coord) and self.board.get_piece(coord).get_colour() != self.colour
+        
+        try: 
+            # Check that the piece is on the opposite team
+            return self.board.get_piece(coord).get_colour() != self.colour
+        except EmptyCoordinateException:
+            # Piece does not exist
+            return False
 
     def get_indefinite_moves(self, coord: (int, int), direction: (int, int)) -> List[(int, int)]:
         """ 
@@ -299,7 +307,12 @@ class King(Piece):
             CASTLES = [(0, -4), (0, 3)]
             for move in CASTLES:
                 coord = self.get_new_coord(self.get_coord(), move)
-                piece = self.board.get_piece(coord)
+
+                try:
+                    piece = self.board.get_piece(coord)
+                except EmptyCoordinateException:
+                    continue
+
                 if piece is Rook and not piece.has_moved():
                     moves += coord
 
@@ -329,7 +342,11 @@ class King(Piece):
         REC_DIRECTIONS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
 
         for direction in REC_DIRECTIONS:
-            piece = self.board.get_piece_in_direction(self.get_new_coord(coord, direction), direction)
+            try:
+                piece = self.board.get_piece_in_direction(self.get_new_coord(coord, direction), direction)
+            except EmptyCoordinateException:
+                continue
+
             if piece is not None and coord in piece.get_possible_moves():
                 return True
         
@@ -337,7 +354,11 @@ class King(Piece):
         KNIGHT_DIRECTIONS = [(-1, -2), (-1, 2), (1, -2), (-1, 2), (-2, -1), (-2, 1), (2, -1), (2, 1)]
 
         for direction in KNIGHT_DIRECTIONS:
-            piece = self.board.get_piece(self.get_new_coord(coord, direction))
+            try:
+                piece = self.board.get_piece(self.get_new_coord(coord, direction))
+            except EmptyCoordinateException:
+                continue
+
             if piece is Knight:
                 return True
 
