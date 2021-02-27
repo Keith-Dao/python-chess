@@ -68,7 +68,7 @@ def main() -> None:
 
     # Game Settings
     board: Board = Board()
-    players: tuple(Player, Player) = (Player(Colours.WHITE, board), Player(Colours.BLACK, board))
+    players: tuple(Player, Player) = (Player(Colours.WHITE.value, board), Player(Colours.BLACK.value, board))
     drawTiles(screen)
 
     # Mouse settings
