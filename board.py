@@ -28,7 +28,12 @@ class Board(BoardType):
             bool: True is slot is empty, otherwise false. If the coordinate is invalid, return false.
         """
 
-        return self.is_in_bounds(coord) and self.get_piece(coord) is None
+        if self.is_in_bounds(coord):
+            try:
+                piece = self.get_piece(coord)
+            except EmptyCoordinateException:
+                return True
+        return False
 
     def is_in_bounds(self, coord: (int, int)) -> bool:
         """
