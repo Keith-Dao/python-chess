@@ -1,6 +1,5 @@
 # Modules
 import operator
-from typing import List, Tuple, Dict
 
 # Files
 from constants import BOARD_HEIGHT, BOARD_WIDTH, Colours
@@ -92,7 +91,7 @@ class Piece(object):
         """ Set the piece to be captured. """
         self.captured = True
 
-    def get_possible_moves(self) -> List[Tuple[int, int]]:
+    def get_possible_moves(self) -> list[tuple[int, int]]:
         """ 
         Gets all the possible moves.
 
@@ -100,7 +99,7 @@ class Piece(object):
             list[tuple[int, int]]: Array of x- y-coordinates that the piece can move to
         """
 
-        moves: List[Tuple[int, int]] = []
+        moves: list[tuple[int, int]] = []
         for move in self.MOVES:
             moves += self.get_indefinite_moves(self.get_new_coord(self.get_coord(), move), move)
         return moves
@@ -142,7 +141,7 @@ class Piece(object):
             # Piece does not exist
             return False
 
-    def get_indefinite_moves(self, coord: (int, int), direction: (int, int)) -> List[Tuple[int, int]]:
+    def get_indefinite_moves(self, coord: (int, int), direction: (int, int)) -> list[tuple[int, int]]:
         """ 
         Gets all the valid moves in a direction indefinitely till it is not valid.
         
@@ -167,7 +166,7 @@ class Piece(object):
 class Pawn(Piece):
     """ The pawn piece. """  
 
-    def get_possible_moves(self) -> List[Tuple[int, int]]:
+    def get_possible_moves(self) -> list[tuple[int, int]]:
         """ 
         Gets all the possible moves.
 
@@ -175,26 +174,26 @@ class Pawn(Piece):
             list[tuple[int, int]]: Array of x- y-coordinates that the piece can move to
         """
         
-        moves: List[Tuple[int, int]] = []
+        moves: list[tuple[int, int]] = []
 
         moveFactor = -1 if self.colour == Colours.WHITE.value else 1
 
         # Regular move
-        MOVE: Tuple[int, int] = (0, 1 * moveFactor)
-        coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), MOVE)
+        MOVE: tuple[int, int] = (0, 1 * moveFactor)
+        coord: tuple[int, int] = self.get_new_coord(self.get_coord(), MOVE)
         if self.validate_move(coord):
             moves += [(coord)]
 
         # Starting move
-        STARTING_MOVE: Tuple[int, int] = (0, 2 * moveFactor)
-        coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), STARTING_MOVE)
+        STARTING_MOVE: tuple[int, int] = (0, 2 * moveFactor)
+        coord: tuple[int, int] = self.get_new_coord(self.get_coord(), STARTING_MOVE)
         if not self.has_moved() and self.validate_move(coord):
             moves += [(coord)]
 
         # Attacks
-        ATTACKS: List[Tuple[int, int]] = [(-1, 1 * moveFactor), (1, 1 * moveFactor)]
+        ATTACKS: list[tuple[int, int]] = [(-1, 1 * moveFactor), (1, 1 * moveFactor)]
         for attack in ATTACKS:
-            coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), attack)
+            coord: tuple[int, int] = self.get_new_coord(self.get_coord(), attack)
             if self.validate_attack(coord):
                 moves += [(coord)]
         
@@ -204,7 +203,7 @@ class Pawn(Piece):
 class Knight(Piece):
     """ The knight piece. """
 
-    def get_possible_moves(self) -> List[Tuple[int, int]]:
+    def get_possible_moves(self) -> list[tuple[int, int]]:
         """ 
         Gets all the possible moves.
 
@@ -212,18 +211,18 @@ class Knight(Piece):
             list[tuple[int, int]]: Array of x- y-coordinates that the piece can move to
         """
 
-        moves: List[Tuple[int, int]] = []
+        moves: list[tuple[int, int]] = []
 
         # Regular move
-        MOVES: List[Tuple[int, int]] = [(-1, -2), (-1, 2), (1, -2), (-1, 2), (-2, -1), (-2, 1), (2, -1), (2, 1)]
+        MOVES: list[tuple[int, int]] = [(-1, -2), (-1, 2), (1, -2), (-1, 2), (-2, -1), (-2, 1), (2, -1), (2, 1)]
         for move in MOVES:
-            coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), move)
+            coord: tuple[int, int] = self.get_new_coord(self.get_coord(), move)
             if self.validate_move(coord):
                 moves += [(coord)]
 
         # Attacks
         for attack in MOVES:
-            coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), attack)
+            coord: tuple[int, int] = self.get_new_coord(self.get_coord(), attack)
             if self.validate_attack(coord):
                 moves += [(coord)]
 
@@ -233,25 +232,25 @@ class Knight(Piece):
 class Queen(Piece):
     """ The queen piece. """
 
-    MOVES: List[Tuple[int, int]] = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+    MOVES: list[tuple[int, int]] = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
 
 
 class Bishop(Piece):
     """ The bishop piece. """
 
-    MOVES: List[Tuple[int, int]] = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
+    MOVES: list[tuple[int, int]] = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
 
 
 class Rook(Piece):
     """ The rook piece. """
 
-    MOVES: List[Tuple[int, int]] = [(-1, 0), (0, -1), (0, 1), (1, 0)]
+    MOVES: list[tuple[int, int]] = [(-1, 0), (0, -1), (0, 1), (1, 0)]
 
 
 class King(Piece):
     """ The king piece. """
 
-    MOVES: List[Tuple[int, int]] = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (-1, 0)]
+    MOVES: list[tuple[int, int]] = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (-1, 0)]
 
     def __init__(self, x: int, y: int, colour: int, board: BoardType) -> None:
         """
@@ -292,7 +291,7 @@ class King(Piece):
        
         return super().validate_attack(coord) and not self.is_coord_checked(coord)
 
-    def get_possible_moves(self) -> List[Tuple[int, int]]:
+    def get_possible_moves(self) -> list[tuple[int, int]]:
         """
         Gets all the possible moves.
 
@@ -300,21 +299,21 @@ class King(Piece):
             list[tuple[int, int]]: Array of x- y-coordinates that the piece can move to
         """
 
-        moves: List[Tuple[int, int]] = []
+        moves: list[tuple[int, int]] = []
         # Regular moves and attacks
         for move in self.MOVES:
-            coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), move)
+            coord: tuple[int, int] = self.get_new_coord(self.get_coord(), move)
             if self.validate_move(coord) or self.validate_attack(coord):
                 moves += coord
         
         # Castling
         if not self.has_moved():
-            CASTLES: Dict[Tuple[int, int], Tuple[int, int]] = { # Map rook's direction to king's final coordinate
+            CASTLES: dict[tuple[int, int], tuple[int, int]] = { # Map rook's direction to king's final coordinate
                 (-1, 0): (-2, 0),
                 (1, 0): (2, 0)
             } 
             for rookMove, kingMove in CASTLES.items():
-                rookCoord: Tuple[int, int] = self.get_new_coord(self.get_coord(), rookMove)
+                rookCoord: tuple[int, int] = self.get_new_coord(self.get_coord(), rookMove)
                 
                 try:
                     piece: Piece = self.board.get_piece_in_direction(rookCoord, rookMove)
@@ -322,7 +321,7 @@ class King(Piece):
                     continue
 
                 if piece is Rook and not piece.has_moved():
-                    coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), kingMove)
+                    coord: tuple[int, int] = self.get_new_coord(self.get_coord(), kingMove)
                     if self.validate_move(coord):
                         moves += coord
 
@@ -349,7 +348,7 @@ class King(Piece):
         """
 
         # Check for recursive pieces
-        REC_DIRECTIONS: List[Tuple[int, int]] = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+        REC_DIRECTIONS: list[tuple[int, int]] = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
 
         for direction in REC_DIRECTIONS:
             try:
@@ -361,7 +360,7 @@ class King(Piece):
                 return True
         
         # Check for knights
-        KNIGHT_DIRECTIONS: List[Tuple[int, int]] = [(-1, -2), (-1, 2), (1, -2), (-1, 2), (-2, -1), (-2, 1), (2, -1), (2, 1)]
+        KNIGHT_DIRECTIONS: list[tuple[int, int]] = [(-1, -2), (-1, 2), (1, -2), (-1, 2), (-2, -1), (-2, 1), (2, -1), (2, 1)]
 
         for direction in KNIGHT_DIRECTIONS:
             try:
@@ -378,11 +377,11 @@ class King(Piece):
 
 class Pieces(object):
     """ Collection of pieces. """
-    ROOK_COLUMNS: List[int] = [0, 7]
-    KNIGHT_COLUMNS: List[int] = [1, 6]
-    BISHOP_COLUMNS: List[int] = [2, 5]
-    QUEEN_COLUMN: List[int] = 3
-    KING_COLUMN: List[int] = 4
+    ROOK_COLUMNS: list[int] = [0, 7]
+    KNIGHT_COLUMNS: list[int] = [1, 6]
+    BISHOP_COLUMNS: list[int] = [2, 5]
+    QUEEN_COLUMN: list[int] = 3
+    KING_COLUMN: list[int] = 4
 
     def __init__(self, colour: int, board: BoardType) -> None:
         """
@@ -400,15 +399,15 @@ class Pieces(object):
             back: int = BOARD_HEIGHT - 1
 
         # Front row pieces
-        self.pawns: List[Pawn] = []
+        self.pawns: list[Pawn] = []
         for col in range(0, BOARD_WIDTH):
             self.pawns.append(Pawn(col, front, colour, board))
 
         # Back row pieces
-        self.rooks: List[Rook] = []
-        self.knights: List[Knight] = []
-        self.bishops: List[Bishop] = []
-        self.queens: List[Queen] = []
+        self.rooks: list[Rook] = []
+        self.knights: list[Knight] = []
+        self.bishops: list[Bishop] = []
+        self.queens: list[Queen] = []
         
         # Rooks
         for col in self.ROOK_COLUMNS:
@@ -433,7 +432,7 @@ class Pieces(object):
         Gets all the possible moves.
 
         Returns:
-            list[tuple[int, int], tuple[int, int]]: List of all moves. 
+            list[tuple[int, int], tuple[int, int]]: list of all moves. 
                 First tuple is the current coordinate and
                 second tuple is the possible move coordinate
         """

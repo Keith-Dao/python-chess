@@ -15,7 +15,7 @@ class Board(BoardType):
 
     def __init__(self) -> None:
         """ Initialise an empty board with the correct dimensions. """
-        self.board: List[List[Piece]] = [[None] * BOARD_WIDTH for _ in range(BOARD_HEIGHT)]
+        self.board: list[list[Piece]] = [[None] * BOARD_WIDTH for _ in range(BOARD_HEIGHT)]
 
     def is_empty_coord(self, coord: (int, int)) -> bool:
         """

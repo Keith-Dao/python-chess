@@ -39,7 +39,7 @@ class RandBot(Bot):
         Randomly choose a possible move.
 
         Returns:
-            tuple[tuple[int, int], tuple[int, int]]: Tuple of starting coordinates and ending coordinates
+            tuple[tuple[int, int], tuple[int, int]]: tuple of starting coordinates and ending coordinates
         """
         possibleMoves = self.pieces.getAllMoves()
         return possibleMoves[random.randrange(0, len(possibleMoves))]
@@ -52,6 +52,6 @@ class SmartBot(Bot):
         Strategically choose the next move.
 
         Returns:
-            tuple[tuple[int, int], tuple[int, int]]: Tuple of starting coordinates and ending coordinates
+            tuple[tuple[int, int], tuple[int, int]]: tuple of starting coordinates and ending coordinates
         """
         pass
