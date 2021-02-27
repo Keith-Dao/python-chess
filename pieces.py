@@ -116,10 +116,6 @@ class Piece(object):
             bool: True if the move is valid, else false
         """
 
-        # Check bounds
-        x, y = coord
-        if x < 0 or y < 0 or x >= BOARD_WIDTH or y >= BOARD_HEIGHT:
-            return False
         # Check space is not occupied
         return self.board.is_empty_coord(coord)
 
@@ -158,7 +154,7 @@ class Piece(object):
             list[tuple[int, int]]: Array of x- y-coordinates that the piece can move to
         """
 
-        # Check that the queen can attack and stop checking
+        # Check that the piece can attack and stop checking
         if self.validate_attack(coord):
             return [coord]
         # Check that the current move is valid and continue checking
@@ -181,25 +177,27 @@ class Pawn(Piece):
         
         moves: List[Tuple[int, int]] = []
 
+        moveFactor = -1 if self.colour == Colours.WHITE.value else 1
+
         # Regular move
-        MOVE: Tuple[int, int] = (0, 1)
+        MOVE: Tuple[int, int] = (0, 1 * moveFactor)
         coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), MOVE)
         if self.validate_move(coord):
-            moves += coord
+            moves += [(coord)]
 
         # Starting move
-        STARTING_MOVE: Tuple[int, int] = (0, 2)
+        STARTING_MOVE: Tuple[int, int] = (0, 2 * moveFactor)
         coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), STARTING_MOVE)
         if not self.has_moved() and self.validate_move(coord):
-            moves += coord
+            moves += [(coord)]
 
         # Attacks
-        ATTACKS: List[Tuple[int, int]] = [(-1, 1), (1, 1)]
+        ATTACKS: List[Tuple[int, int]] = [(-1, 1 * moveFactor), (1, 1 * moveFactor)]
         for attack in ATTACKS:
             coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), attack)
             if self.validate_attack(coord):
-                moves += coord
-
+                moves += [(coord)]
+        
         return moves
 
 
@@ -221,13 +219,13 @@ class Knight(Piece):
         for move in MOVES:
             coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), move)
             if self.validate_move(coord):
-                moves += coord
+                moves += [(coord)]
 
         # Attacks
         for attack in MOVES:
             coord: Tuple[int, int] = self.get_new_coord(self.get_coord(), attack)
             if self.validate_attack(coord):
-                moves += coord
+                moves += [(coord)]
 
         return moves
 
@@ -315,7 +313,7 @@ class King(Piece):
                 (-1, 0): (-2, 0),
                 (1, 0): (2, 0)
             } 
-            for rookMove, kingMove in CASTLES:
+            for rookMove, kingMove in CASTLES.items():
                 rookCoord: Tuple[int, int] = self.get_new_coord(self.get_coord(), rookMove)
                 
                 try:
@@ -429,4 +427,56 @@ class Pieces(object):
 
         # King
         self.king: King = King(self.KING_COLUMN, back, colour, board)
+        
+    def get_all_moves(self) -> list[tuple[int, int], tuple[int, int]]:
+        """
+        Gets all the possible moves.
+
+        Returns:
+            list[tuple[int, int], tuple[int, int]]: List of all moves. 
+                First tuple is the current coordinate and
+                second tuple is the possible move coordinate
+        """
+
+        def get_moves(piece: Piece) -> list[tuple[int, int], tuple[int, int]]:
+            posMoves = []
+            pos = piece.get_coord()
+            for move in piece.get_possible_moves():
+                posMoves.append((pos, move))
+            print(posMoves)
+            return posMoves
+
+
+        moves = []
+        # Pawns
+        print("Pawns:")
+        for pawn in self.pawns:
+            moves += get_moves(pawn)
+        
+        # Rooks
+        print("Rooks:")
+        for rook in self.rooks:
+            moves += get_moves(rook)
+
+        # Knights
+        print("Knights")
+        for knight in self.knights:
+            moves += get_moves(knight)
+
+        # Bishops
+        print("Bishops")
+        for bishop in self.bishops:
+            moves += get_moves(bishop)
+        
+        # Queen
+        print("Queens")
+        for queen in self.queens:
+            moves += get_moves(queen)
+        
+        # King
+        print("King")
+        moves += get_moves(self.king)
+
+        return moves
+        
         
