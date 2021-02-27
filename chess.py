@@ -3,6 +3,8 @@ import pygame, sys
 
 # Files
 from constants import *
+from player import Player
+from board import Board
 
 # Exceptions
 from exceptions import InvalidCoordinateException
@@ -29,6 +31,7 @@ def drawTiles(screen: pygame.Surface) -> None:
             else:
                 colour: tuple[int, int, int] = (0, 0, 0)
             pygame.draw.rect(screen, colour, (x, y, SQUARE_DIMENSIONS, SQUARE_DIMENSIONS))
+
 
 def getTileIndex(coord: tuple[int, int]) -> tuple[int, int]:
     """
@@ -57,14 +60,18 @@ def getTileIndex(coord: tuple[int, int]) -> tuple[int, int]:
     return column, row
 
 
-
 def main() -> None:
     """ Setup the game display. """
+    # Game Display
     pygame.init()
-    screen: pygame.Surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) 
+    screen: pygame.Surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    # Game Settings
+    board: Board = Board()
+    players: tuple(Player, Player) = (Player(Colours.WHITE, board), Player(Colours.BLACK, board))
     drawTiles(screen)
 
-    
+    # Mouse settings
     mousePos = None
     
     while True:
